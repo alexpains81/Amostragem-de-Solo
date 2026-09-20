@@ -1,5 +1,5 @@
 /* Offline para interface do aplicativo; tiles ficam disponíveis após visualização online. */
-const CACHE_APP='amostragem-app-v7', CACHE_TILES='tiles-satelite-v1';
+const CACHE_APP='amostragem-app-v8', CACHE_TILES='tiles-satelite-v1';
 const APP_SHELL=['./','./index.html','./manifest.webmanifest','./assets/icon.svg'];
 const LIBS=['https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js','https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css','https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js','https://cdnjs.cloudflare.com/ajax/libs/togeojson/0.16.0/togeojson.min.js'];
 self.addEventListener('install',e=>e.waitUntil((async()=>{const c=await caches.open(CACHE_APP);await c.addAll(APP_SHELL);await Promise.all(LIBS.map(async url=>{try{const r=await fetch(url,{mode:'no-cors'});if(r.ok||r.type==='opaque')await c.put(url,r)}catch(_){}}));await self.skipWaiting()})()));
