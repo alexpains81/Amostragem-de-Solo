@@ -253,7 +253,7 @@ input[type=range]{min-height:42px;touch-action:pan-y}
 .fab button{width:54px;height:54px;touch-action:manipulation;border-width:2px}
 #fab-sol,#fab-gps{appearance:none;border:2px solid var(--line);border-radius:50%;background:#fff;color:var(--ink-2);box-shadow:0 2px 8px rgba(0,0,0,.3);cursor:pointer;touch-action:manipulation;position:relative;z-index:auto;left:auto;right:auto;bottom:auto;grid-column:2;grid-row:2;width:54px;min-width:54px;height:54px;padding:0;display:grid;place-items:center}
 #fab-sol[data-on="true"]{background:var(--azul);color:#fff;border-color:var(--azul)}
-#fab-gps{grid-column:2;grid-row:1}
+.fab #fab-gps{grid-column:auto;grid-row:auto;flex:none}
 #fab-gps[data-on="true"]{background:#047857;color:#fff;border-color:#065f46}
 #fab-gps:focus-visible,#fab-sol:focus-visible{outline:3px solid #0ea5e9;outline-offset:2px}
 #fab-sol svg,#fab-gps svg{width:22px;height:22px}
@@ -297,6 +297,7 @@ input:focus-visible,select:focus-visible,.btn:focus-visible,#btn-painel:focus-vi
   <symbol id="i-seta" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 5 21l7-4 7 4z"/></symbol>
   <symbol id="i-sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
   <symbol id="i-baixar-mapa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v10M8 11l4 4 4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></symbol>
+  <symbol id="i-gps-localizacao" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="10" r="2.5" fill="currentColor" stroke="none"/></symbol>
   <symbol id="i-centro" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></symbol>
 </svg>
 
@@ -339,7 +340,6 @@ input:focus-visible,select:focus-visible,.btn:focus-visible,#btn-painel:focus-vi
       <span class="tit">Amostras</span>
       <span class="valor" id="amostras-balao-valor">0 total · 0 coletadas</span>
     </div>
-    <button id="fab-gps" type="button" data-on="false" title="Iniciar rastreamento GPS do aplicativo" aria-label="Iniciar rastreamento GPS do aplicativo" aria-pressed="false"><svg aria-hidden="true"><use href="#i-centro"/></svg></button>
     <button id="fab-sol" title="Modo sol (alto contraste)" aria-label="Alternar modo sol" aria-pressed="false"><svg><use href="#i-sol"/></svg></button>
     </div>
 
@@ -351,6 +351,7 @@ input:focus-visible,select:focus-visible,.btn:focus-visible,#btn-painel:focus-vi
     </div>
     <div class="fab">
       <button id="fab-add" title="Adicionar ponto tocando no mapa" aria-label="Adicionar ponto manual"><svg><use href="#i-mais"/></svg></button>
+      <button id="fab-gps" type="button" data-on="false" title="Iniciar rastreamento GPS do aplicativo" aria-label="Iniciar rastreamento GPS do aplicativo" aria-pressed="false"><svg aria-hidden="true"><use href="#i-gps-localizacao"/></svg></button>
       <button id="fab-centro" title="Centralizar" aria-label="Centralizar no talhão"><svg><use href="#i-centro"/></svg></button>
     </div>
   </div>
