@@ -19,7 +19,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-<link rel="stylesheet" href="./assets/leaflet.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
 
 <style>
 :root{
@@ -565,9 +565,9 @@ input:focus-visible,select:focus-visible,.btn:focus-visible,#btn-painel:focus-vi
   </div>
 </dialog>
 
-<script src="./assets/leaflet.js"></script>
-<script src="./assets/turf.min.js"></script>
-<script src="./assets/togeojson.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/togeojson/0.16.0/togeojson.min.js"></script>
 <script>
 "use strict";
 if (!window.L || !window.turf || !window.toGeoJSON) {
@@ -2144,12 +2144,12 @@ async function verificarOffline() {
   const seguro=window.isSecureContext;
   if (!seguro) {s.textContent='GPS/PWA: indisponíveis no arquivo local. Publique a pasta completa por HTTPS.';return;}
   if (!('serviceWorker' in navigator) || !('caches' in window)) {s.textContent='O navegador não oferece instalação/cache. Atualize o Chrome.';return;}
-  const cache=await caches.open('amostragem-app-v6');
+  const cache=await caches.open('amostragem-app-v7');
   const exigidos=[location.href.split('#')[0], './manifest.webmanifest','./assets/icon.svg',
-    './assets/leaflet.js',
-    './assets/leaflet.css',
-    './assets/turf.min.js',
-    './assets/togeojson.min.js'];
+    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css',
+    'https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/togeojson/0.16.0/togeojson.min.js'];
   let ok=0;
   for(const u of exigidos) if(await cache.match(new URL(u,location.href).href)) ok++;
   const pronto=ok===exigidos.length && !!navigator.serviceWorker.controller;
