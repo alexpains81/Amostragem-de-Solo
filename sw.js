@@ -1,5 +1,5 @@
 /* Cache offline do aplicativo; online: sempre buscar HTML mais recente. */
-const CACHE_APP='amostragem-app-v9', CACHE_TILES='tiles-satelite-v1';
+const CACHE_APP='amostragem-app-v10', CACHE_TILES='tiles-satelite-v1';
 const ROOT=self.registration.scope;
 const INDEX=new URL('index.html',ROOT).href;
 const SHELL=['manifest.webmanifest','assets/icon.svg'];
@@ -9,7 +9,7 @@ self.addEventListener('install',event=>event.waitUntil((async()=>{
   const cache=await caches.open(CACHE_APP);
   /* Query nova evita receber o index.html antigo do service worker anterior. */
   const refresh=new URL(INDEX);
-  refresh.searchParams.set('__app_version','v9');
+  refresh.searchParams.set('__app_version','v10');
   const html=await fetch(refresh.href,{cache:'reload'});
   if(!html.ok)throw new Error('Não foi possível atualizar a interface.');
   await cache.put(INDEX,html.clone());
