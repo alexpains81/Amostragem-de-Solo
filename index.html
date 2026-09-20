@@ -251,9 +251,12 @@ input[type=range]{min-height:42px;touch-action:pan-y}
 .hud .seta{height:46px;width:46px}.hud .dist{font-size:25px}
 .fab{right:10px;bottom:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px))}
 .fab button{width:54px;height:54px;touch-action:manipulation;border-width:2px}
-#fab-sol{appearance:none;border:2px solid var(--line);border-radius:50%;background:#fff;color:var(--ink-2);box-shadow:0 2px 8px rgba(0,0,0,.3);cursor:pointer;touch-action:manipulation;position:relative;z-index:auto;left:auto;right:auto;bottom:auto;grid-column:2;grid-row:2;width:54px;min-width:54px;height:54px;padding:0;display:grid;place-items:center}
+#fab-sol,#fab-gps{appearance:none;border:2px solid var(--line);border-radius:50%;background:#fff;color:var(--ink-2);box-shadow:0 2px 8px rgba(0,0,0,.3);cursor:pointer;touch-action:manipulation;position:relative;z-index:auto;left:auto;right:auto;bottom:auto;grid-column:2;grid-row:2;width:54px;min-width:54px;height:54px;padding:0;display:grid;place-items:center}
 #fab-sol[data-on="true"]{background:var(--azul);color:#fff;border-color:var(--azul)}
-#fab-sol svg{width:22px;height:22px}
+#fab-gps{grid-column:2;grid-row:1}
+#fab-gps[data-on="true"]{background:#047857;color:#fff;border-color:#065f46}
+#fab-gps:focus-visible,#fab-sol:focus-visible{outline:3px solid #0ea5e9;outline-offset:2px}
+#fab-sol svg,#fab-gps svg{width:22px;height:22px}
 #toasts{top:calc(var(--safe-t) + var(--barra-altura) + 6px)}
 dialog{max-height:calc(var(--app-altura) - 28px);overflow:auto;width:calc(100% - 20px)}
 .dlg{padding:16px}dialog .btn{min-height:48px}
@@ -336,6 +339,7 @@ input:focus-visible,select:focus-visible,.btn:focus-visible,#btn-painel:focus-vi
       <span class="tit">Amostras</span>
       <span class="valor" id="amostras-balao-valor">0 total · 0 coletadas</span>
     </div>
+    <button id="fab-gps" type="button" data-on="false" title="Iniciar rastreamento GPS do aplicativo" aria-label="Iniciar rastreamento GPS do aplicativo" aria-pressed="false"><svg aria-hidden="true"><use href="#i-centro"/></svg></button>
     <button id="fab-sol" title="Modo sol (alto contraste)" aria-label="Alternar modo sol" aria-pressed="false"><svg><use href="#i-sol"/></svg></button>
     </div>
 
@@ -1429,6 +1433,17 @@ function liberarColeta(pode) {
 }
 
 /* ---------------------- GPS ---------------------- */
+function atualizarBotaoGpsRapido() {
+  const ligado = watchId != null;
+  const botao = $('#fab-gps');
+  if (!botao) return;
+  botao.dataset.on = String(ligado);
+  botao.setAttribute('aria-pressed', String(ligado));
+  const texto = ligado ? 'Interromper rastreamento GPS do aplicativo' : 'Iniciar rastreamento GPS do aplicativo';
+  botao.title = texto;
+  botao.setAttribute('aria-label', texto);
+}
+
 function alternarGps() {
   if (watchId != null) { pararGps(); return; }
   if (!window.isSecureContext) {
@@ -1475,6 +1490,7 @@ function alternarGps() {
   }, 5000);
   $('#btn-gps').classList.add('ativo');
   $('#btn-gps').lastChild.textContent = 'Desligar GPS';
+  atualizarBotaoGpsRapido();
   $('#estado-gps').textContent = 'Solicitando localização ao Android…';
   atualizarBalaoGps();
   ativarTelaLigada();
@@ -1497,6 +1513,7 @@ function pararGps() {
   if (!modoSim) { posicao = null; if (marcadorGps) { map.removeLayer(marcadorGps); marcadorGps = null; } }
   $('#btn-gps').classList.remove('ativo');
   $('#btn-gps').lastChild.textContent = 'Ligar GPS';
+  atualizarBotaoGpsRapido();
   $('#estado-gps').textContent = 'GPS desligado.';
   atualizarBalaoGps();
   atualizarNavegacao();
@@ -2144,7 +2161,7 @@ async function verificarOffline() {
   const seguro=window.isSecureContext;
   if (!seguro) {s.textContent='GPS/PWA: indisponíveis no arquivo local. Publique a pasta completa por HTTPS.';return;}
   if (!('serviceWorker' in navigator) || !('caches' in window)) {s.textContent='O navegador não oferece instalação/cache. Atualize o Chrome.';return;}
-  const cache=await caches.open('amostragem-app-v7');
+  const cache=await caches.open('amostragem-app-v8');
   const exigidos=[location.href.split('#')[0], './manifest.webmanifest','./assets/icon.svg',
     'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js',
     'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css',
@@ -2268,6 +2285,7 @@ function ligarEventos() {
   $('#btn-resortear').addEventListener('click', () => regerarGrade(true));
 
   $('#btn-gps').addEventListener('click', alternarGps);
+  $('#fab-gps').addEventListener('click', alternarGps);
   $('#btn-sim').addEventListener('click', alternarSimulacao);
   $('#btn-coletar').addEventListener('click', () => coletar(false));
   $('#btn-pular').addEventListener('click', pularPonto);
@@ -2373,6 +2391,7 @@ async function iniciar() {
 
   iniciarMapa();
   ligarEventos();
+  atualizarBotaoGpsRapido();
   $('#in-fundo-mapa').value = localStorage.getItem('fundoMapa') === 'branco' ? 'branco' : 'satelite';
   aplicarFundoMapa($('#in-fundo-mapa').value);
 
